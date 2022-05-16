@@ -5,6 +5,16 @@ const fs = require('fs');
 const upload  = require('../middleware/multer');
 
 
+const lastId = () => {
+    let ultimo = 0;
+    productsBD.forEach(product => {
+        if (ultimo < product.id) {
+            ultimo = product.id;
+        };
+    });
+ return ultimo;
+};
+
 router.get('/products', async (req,res)=>{
     try{
         const products = await fs.promises.readFile('./dataBase.json', 'utf-8');
@@ -62,6 +72,29 @@ router.post('/products', upload.single() ,async (req,res)=>{
 
 router.put('/products/:id', async (req,res)=>{
     try{
+        const id = req.params.id;
+        const products = await fs.promises.readFile('./dataBase.json', 'utf-8');
+        const allProducts = JSON.parse(products);
+
+        const findProduct = allProducts.find( product => product.id == id);
+
+        if(findProduct != undefined){
+            productToEdit ={
+                ...findProduct,
+                name: req.body.name,
+                price: req.body.price,
+            }
+            const  edit = allProducts.indexOf(findProduct);
+            allProducts[edit] = productToEdit;
+            await fs.promises.writeFile('./dataBase.json', JSON.stringify(allProducts, null, '\t'))
+            res.status(200).json({
+                msg:'producto editado',
+                status:200
+            })
+        }else res.status(400).json({
+            msg: 'producto no ediado',
+            status:400
+        })
 
     } catch (err){ console.log(err)}
 });
