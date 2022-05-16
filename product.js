@@ -1,0 +1,125 @@
+const fs = require('fs'); 
+const path = require('path');
+
+const lastId = () => {
+    let ultimo = 0;
+    productsBD.forEach(product => {
+        if (ultimo < product.id) {
+            ultimo = product.id;
+        };
+    });
+    return ultimo;
+};
+
+class contenedor {
+    constructor(file){
+        this.file = file;
+    };
+
+    getAll = async () =>{
+        try{
+            const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
+            const allProducts = JSON.parse(products);
+            res.status(200).json({
+                data:allProducts,
+                status:200
+            }); 
+        } catch (err){ console.log(err) }
+    };
+
+    getById = async ()=>{
+        try{
+            const id = req.params.id;
+            const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
+            const allProducts = JSON.parse(products);
+    
+            const findProduct = allProducts.find(product => product.id == id);
+    
+            if(findProduct != undefined ){
+                res.status(200).json({
+                    msg:findProduct,
+                    status:200
+                })
+            }else res.status(400).json({
+                msg:' producto no encontrado',
+                status:400
+            });
+            
+        } catch (err){ console.log(err) }
+    };
+
+    createProduct = async ()=>{
+        
+        const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
+        const allProducts = JSON.parse(products);
+        const newProduct = {
+            id: lastId(allProducts)+1,
+            title: req.body.title,
+            price: req.body.price,
+            image: req.file.filename
+        };
+        try{
+            allProducts.push(newProduct)
+            await fs.promises.writeFile('./dataBase.json', JSON.stringify(allProducts, null, '\t'))
+            res.status(200).json({
+                data:'producto creado',
+                status:200
+            });
+        } catch (err){ console.log(err) }
+    };
+
+    editProduct = async ()=>{
+        try{
+            const id = req.params.id;
+            const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
+            const allProducts = JSON.parse(products);
+    
+            const findProduct = allProducts.find( product => product.id == id);
+    
+            if(findProduct != undefined){
+                productToEdit ={
+                    ...findProduct,
+                    name: req.body.name,
+                    price: req.body.price,
+                }
+                const  edit = allProducts.indexOf(findProduct);
+                allProducts[edit] = productToEdit;
+                await fs.promises.writeFile('./dataBase.json', JSON.stringify(allProducts, null, '\t'))
+                res.status(200).json({
+                    msg:'producto editado',
+                    status:200
+                })
+            }else res.status(400).json({
+                msg: 'producto no ediado',
+                status:400
+            })
+    
+        } catch (err){ console.log(err) }
+    };
+
+    deleteById = async () =>{
+        try{
+            const id = req.params.id;
+            const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
+            const allProducts = JSON.parse(products);
+            
+            const productById = allProducts.filter( product => product.id != id)
+            if(productById.length != allProducts.length){
+                await fs.promises.writeFile(`./${this.file}.json`, JSON.stringify(productById, null,'\t'));
+                res.status(200).json({
+                    msg:'producto borrado',
+                    status:200
+                })
+            }else res.status(400).json({
+                status:400,
+                msg:"producto no eliminado"
+            })
+    
+        } catch (err){ console.log(err) }
+    }
+
+}
+
+const products = new ProductsController('dataBase');
+
+module.exports = products;
