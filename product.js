@@ -1,9 +1,9 @@
 const fs = require('fs'); 
 const path = require('path');
 
-const lastId = () => {
+const lastId = (allProducts) => {
     let ultimo = 0;
-    productsBD.forEach(product => {
+    allProducts.forEach(product => {
         if (ultimo < product.id) {
             ultimo = product.id;
         };
@@ -11,33 +11,63 @@ const lastId = () => {
     return ultimo;
 };
 
-class contenedor {
+class newProducts {
     constructor(file){
         this.file = file;
     };
 
-    getAll = async () =>{
+    getAll = async (req,res) =>{
         try{
             const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
             const allProducts = JSON.parse(products);
+            if(!allProducts){
             res.status(200).json({
                 data:allProducts,
                 status:200
             }); 
+        }else res.status(400).json({
+            msg: 'no hay productos',
+            status:400
+        })
         } catch (err){ console.log(err) }
     };
 
-    getById = async ()=>{
+
+    createProduct = async (req,res)=>{
+        
         try{
-            const id = req.params.id;
+        const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
+        const allProducts = JSON.parse(products);
+        
+        const newProduct = {
+            id: lastId(allProducts)+1,
+            name: req.body.title,
+            price: req.body.price,
+            image: req.file.filename
+        }
+            
+        allProducts.push(newProduct)
+            await fs.promises.writeFile('./dataBase.json', JSON.stringify(allProducts, null, '\t'))
+            res.status(200).json({
+                data:'producto creado',
+                status:200
+            });
+        
+        } catch (err){ console.log(err) }
+    };
+
+
+    getById = async (req,res,id)=>{
+        try{
+            
             const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
             const allProducts = JSON.parse(products);
     
-            const findProduct = allProducts.find(product => product.id == id);
+            const product = allProducts.find(product => product.id == id);
     
-            if(findProduct != undefined ){
+            if(product != undefined ){
                 res.status(200).json({
-                    msg:findProduct,
+                    msg:product,
                     status:200
                 })
             }else res.status(400).json({
@@ -48,56 +78,37 @@ class contenedor {
         } catch (err){ console.log(err) }
     };
 
-    createProduct = async ()=>{
-        
-        const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
-        const allProducts = JSON.parse(products);
-        const newProduct = {
-            id: lastId(allProducts)+1,
-            title: req.body.title,
-            price: req.body.price,
-            image: req.file.filename
-        };
-        try{
-            allProducts.push(newProduct)
-            await fs.promises.writeFile('./dataBase.json', JSON.stringify(allProducts, null, '\t'))
-            res.status(200).json({
-                data:'producto creado',
-                status:200
-            });
-        } catch (err){ console.log(err) }
-    };
 
-    editProduct = async ()=>{
+    editProduct = async (req,res,id)=>{
         try{
-            const id = req.params.id;
+        
             const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
             const allProducts = JSON.parse(products);
     
-            const findProduct = allProducts.find( product => product.id == id);
+            const productToEdit = allProducts.find( product => product.id == id);
     
-            if(findProduct != undefined){
-                productToEdit ={
-                    ...findProduct,
-                    name: req.body.name,
+            if(productToEdit != undefined){
+                const productEdit ={
+                    ...productToEdit,
+                    name: req.body.title,
                     price: req.body.price,
                 }
-                const  edit = allProducts.indexOf(findProduct);
-                allProducts[edit] = productToEdit;
+                const edit = allProducts.indexOf(productToEdit);
+                allProducts[edit] = productEdit;
                 await fs.promises.writeFile('./dataBase.json', JSON.stringify(allProducts, null, '\t'))
                 res.status(200).json({
-                    msg:'producto editado',
+                    msg:`producto editado`,
                     status:200
                 })
             }else res.status(400).json({
-                msg: 'producto no ediado',
+                msg: 'producto no encontrado',
                 status:400
             })
     
         } catch (err){ console.log(err) }
     };
 
-    deleteById = async () =>{
+    deleteById = async (req,res) =>{
         try{
             const id = req.params.id;
             const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
@@ -111,8 +122,8 @@ class contenedor {
                     status:200
                 })
             }else res.status(400).json({
-                status:400,
-                msg:"producto no eliminado"
+                msg:"producto no encontrado",
+                status:400
             })
     
         } catch (err){ console.log(err) }
@@ -120,6 +131,6 @@ class contenedor {
 
 }
 
-const products = new ProductsController('dataBase');
+const products = new newProducts('dataBase');
 
 module.exports = products;
