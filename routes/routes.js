@@ -22,7 +22,7 @@ router.get('/products/:id', async (req,res)=>{
 });
 
 
-router.post('/products', upload.single('img') ,async (req,res)=>{
+router.post('/products', upload.single('image') ,async (req,res)=>{
     res.send(await  products.createProduct(req,res));
 });
 

@@ -20,7 +20,7 @@ class newProducts {
         try{
             const products = await fs.promises.readFile(`./${this.file}.json`, 'utf-8');
             const allProducts = JSON.parse(products);
-            if(!allProducts){
+            if(allProducts.length > 0){
             res.status(200).json({
                 data:allProducts,
                 status:200
