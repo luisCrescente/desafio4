@@ -2,12 +2,13 @@ const express = require('express');
 const app = express();
 const port = 8080;
 const path = require('path');
+const handlebars = require('express-handlebars');
 
 
 app.use(express.static('../img') );
 
 
-app.use(express.urlencoded({ extended: false}));
+app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
 
@@ -15,7 +16,27 @@ app.use(
     express.static(path.resolve(__dirname, './'))
     );
 
-const product = require('./routes/routes')
+// vistas HANLEDBARS
+app.engine('hbs', handlebars.engine({
+    extname:'.hbs',
+    defaultLayout:'main.hbs',
+    layoutsDir:__dirname + './handlebars'
+}));
+app.set('view engine','hbs');
+app.set('views', './view/handlebars');
+
+
+// vista PUG
+app.set('view engine','pug');
+app.set('views', './view/pug');
+
+
+// // vistas EJS
+// app.set('view engine','ejs');
+// app.set('views', './view/ejs');
+
+    
+const product = require('./routes/routes');
 app.use('/api',product);
 
 
