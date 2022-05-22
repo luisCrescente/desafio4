@@ -21,13 +21,17 @@ router.get('/hbs',async (req,res)=>{
     res.render('main.hbs',{layout:false});
 });
 
-router.get('/pug',(req,res)=>{
-    res.render('main.pug');
+router.get('/pug',async (req,res)=>{
+    try {
+        const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
+        const products = JSON.parse(reads);
+        res.render('main.pug',{products:products});
+    } catch (err) {console.log(err)}
 });
 
 router.get('/ejs', async (req,res)=>{
-    const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
-    const products = JSON.parse(reads);
+    // const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
+    // const products = JSON.parse(reads);
     res.render('main.ejs',{products:products});
 });
 

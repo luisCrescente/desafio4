@@ -26,14 +26,14 @@ app.use(
 // app.set('views', './views/handlebars');
 
 
-// // vista PUG
-// app.set('view engine','pug');
-// app.set('views', './views/pug');
+// vista PUG
+app.set('view engine','pug');
+app.set('views', './views/pug');
 
 
-// vistas EJS
-app.set('view engine','ejs');
-app.set('views', './views/ejs');
+// // vistas EJS
+// app.set('view engine','ejs');
+// app.set('views', './views/ejs');
 
     
 const product = require('./routes/routes');

@@ -6,13 +6,18 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Document
     body 
-table
-    thead
-        th title
-        th price
-        th image
-    tbody
-    tr
-        td products.name
-        td product.price
-        td product.image
+    if products.length 
+        table.table
+            thead
+                th title
+                th price
+                th image
+            tbody
+                    
+                for x in products
+                    tr
+                        td #{x.name}
+                        td #{x.price}
+                        td #{x.image}
+    else 
+        p no hay productos 
