@@ -8,5 +8,26 @@
 </head>
 <body>
     hola estoy hbs
+    {{#if products.lenght}}
+    <table>
+        <thead>
+            <th>title</th>
+            <th>price</th>
+            <th>image</th>
+        </thead>
+        <tbody>
+            {{#each products}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{price}}</td>
+                    </tr>
+                {{/each}}
+                {{else }}
+                <p>No hay productos cargados</p>
+
+            {{/if}}
+        </tbody>
+    </table>
+
 </body>
 </html>

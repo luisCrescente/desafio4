@@ -17,23 +17,23 @@ app.use(
     );
 
 // vistas HANLEDBARS
-app.engine('hbs', handlebars.engine({
-    extname:'.hbs',
-    defaultLayout:'main.hbs',
-    layoutsDir:__dirname + './handlebars'
-}));
-app.set('view engine','hbs');
-app.set('views', './view/handlebars');
+// app.engine('hbs', handlebars.engine({
+//     extname:'.hbs',
+//     defaultLayout:'main.hbs',
+//     layoutsDir:__dirname + './handlebars'
+// }));
+// app.set('view engine','hbs');
+// app.set('views', './views/handlebars');
 
 
-// vista PUG
-app.set('view engine','pug');
-app.set('views', './view/pug');
+// // vista PUG
+// app.set('view engine','pug');
+// app.set('views', './views/pug');
 
 
-// // vistas EJS
-// app.set('view engine','ejs');
-// app.set('views', './view/ejs');
+// vistas EJS
+app.set('view engine','ejs');
+app.set('views', './views/ejs');
 
     
 const product = require('./routes/routes');

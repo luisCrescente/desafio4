@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <% if (allProducts.length) { %>
+    <% if (products.length) { %>
         <table>
             <thead>
                 <th>title</th>
@@ -15,13 +15,13 @@
                 <th>image</th>
             </thead>
             <tbody>
-                <%= allproducts.forEach(product => { %>
+                <% products.forEach(product => { %>
                     <tr>
-                        <td><% product.title %></td>
-                        <td><% product.price %></td>
-                        <!-- <td><%# product.image %></td> -->
+                        <td><%= product.name %></td>
+                        <td><%= product.price %></td>
+                        <td> <img width="250px" height="250px" src="../../img/<%= product.image %>" alt=""> </td> 
                     </tr>
-                    <%=  }) %>
+                    <% }) %>
             </tbody>
         </table>
     <% } else { %>
