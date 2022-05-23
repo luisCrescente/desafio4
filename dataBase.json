@@ -1,3 +1,8 @@
 [
-	
+	{
+		"id": 1,
+		"name": "pinguino",
+		"price": "123",
+		"image": "image-1653341828239.jpg"
+	}
 ]

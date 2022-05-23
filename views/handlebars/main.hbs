@@ -7,27 +7,34 @@
     <title>Document</title>
 </head>
 <body>
-    hola estoy hbs
-    {{#if products.lenght}}
-    <table>
+
+        {{#if products.length}}
+
+        <table >
         <thead>
+        <tr>
             <th>title</th>
             <th>price</th>
             <th>image</th>
+        </tr>
         </thead>
         <tbody>
-            {{#each products}}
-                    <tr>
-                        <td>{{name}}</td>
-                        <td>{{price}}</td>
-                    </tr>
-                {{/each}}
-                {{else }}
-                <p>No hay productos cargados</p>
-
-            {{/if}}
+        {{#each products }}
+        <tr>
+            <td>{{name}}</td>
+            <td>$ {{price}}</td>
+            <td>
+                
+                <img src='../../img/{{image}}' width="150px" height="150px" alt="...">
+            </td>
+        </tr>
+        {{/each}}
         </tbody>
-    </table>
+        </table>
+        {{else}}
+
+        <p> no hay productos cargados</p>
+        {{/if}}
 
 </body>
 </html>

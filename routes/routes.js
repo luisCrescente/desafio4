@@ -15,10 +15,11 @@ router.get('/', (req,res)=>{
 /**** RENDERIZACION VISTAS ****/
 
 router.get('/hbs',async (req,res)=>{
-    // const read = await fs.promises.readFile(`dataBase.json`, 'utf-8');
-    // const allProducts = JSON.parse(read);
-    
-    res.render('main.hbs',{layout:false});
+    // try {
+    //         const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
+    //         const products = JSON.parse(reads);
+    //         res.render('main.hbs',{products:products});
+    //     } catch (err) {console.log(err)}
 });
 
 router.get('/pug',async (req,res)=>{

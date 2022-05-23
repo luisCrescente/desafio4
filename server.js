@@ -19,8 +19,8 @@ app.use(
 // vistas HANLEDBARS
 // app.engine('hbs', handlebars.engine({
 //     extname:'.hbs',
-//     defaultLayout:'main.hbs',
-//     layoutsDir:__dirname + './handlebars'
+//     defaultLayout:'',
+//     layoutsDir:__dirname + '/views/handlebars'
 // }));
 // app.set('view engine','hbs');
 // app.set('views', './views/handlebars');
@@ -31,7 +31,7 @@ app.set('view engine','pug');
 app.set('views', './views/pug');
 
 
-// // vistas EJS
+ // vistas EJS
 // app.set('view engine','ejs');
 // app.set('views', './views/ejs');
 
