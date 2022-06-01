@@ -15,25 +15,25 @@ router.get('/', (req,res)=>{
 /**** RENDERIZACION VISTAS ****/
 
 router.get('/hbs',async (req,res)=>{
-    // try {
-    //         const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
-    //         const products = JSON.parse(reads);
-    //         res.render('main.hbs',{products:products});
-    //     } catch (err) {console.log(err)}
+    try {
+            const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
+            const products = JSON.parse(reads);
+            res.render('index.hbs',{products:products});
+        } catch (err) {console.log(err)}
 });
 
 router.get('/pug',async (req,res)=>{
-    try {
-        const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
-        const products = JSON.parse(reads);
-        res.render('main.pug',{products:products});
-    } catch (err) {console.log(err)}
+    // try {
+    //     const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
+    //     const products = JSON.parse(reads);
+    //     res.render('main.pug',{products:products});
+    // } catch (err) {console.log(err)}
 });
 
 router.get('/ejs', async (req,res)=>{
     // const reads = await fs.promises.readFile('dataBase.json', 'utf-8');
     // const products = JSON.parse(reads);
-    res.render('main.ejs',{products:products});
+    //res.render('main.ejs',{products:products});
 });
 
 /**** RENDERIZACION VISTAS ****/
